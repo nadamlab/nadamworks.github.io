@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sena Lee | Profile</title>
+
+  <!-- 글꼴: 영어는 게임 픽셀 글꼴, 한글은 Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       ① 색상 모음 — 여기 값만 바꾸면 전체 색이 바뀌어요
+       ============================================ */
+    :root {
+      --bg: #07060b;          /* 배경 (거의 검정) */
+      --panel: #110e1a;       /* 큰 창 안쪽 색 */
+      --inner: #0b0912;       /* 작은 칸 안쪽 색 */
+      --neon: #b44dff;        /* 메인 네온 보라 */
+      --neon-soft: #d9a6ff;   /* 밝은 보라 (글씨용) */
+      --neon-dim: #3a1f5c;    /* 어두운 보라 (테두리, 빈 막대) */
+      --text: #ece6f5;        /* 기본 글씨 */
+      --muted: #8a7fa0;       /* 흐린 글씨 */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 50% 30%, rgba(180, 77, 255, 0.18), transparent 60%),
+        linear-gradient(rgba(180, 77, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180, 77, 255, 0.06) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+
+    /* 옛날 모니터 가로줄(스캔라인) */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.25) 3px
+      );
+      z-index: 50;
+    }
+
+    .pixel { font-family: 'Press Start 2P', monospace; }
+
+    /* ============================================
+       ② 전체 게임 창
+       ============================================ */
+    .screen {
+      width: 100%;
+      max-width: 540px;
+      background: var(--panel);
+      border: 3px solid var(--neon);
+      box-shadow:
+        0 0 12px var(--neon),
+        0 0 40px rgba(180, 77, 255, 0.35),
+        inset 0 0 20px rgba(180, 77, 255, 0.15);
+      padding: 24px;
+      position: relative;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+    .topbar .on { color: var(--neon-soft); }
+
+    .section-title {
+      font-size: 10px;
+      color: var(--neon);
+      margin: 26px 0 14px;
+      letter-spacing: 1px;
+    }
+
+    /* ============================================
+       ③ 캐릭터 카드 (닉네임 · 직업 · 한 줄 대사)
+       ============================================ */
+    .char-card {
+      position: relative;
+      border: 2px solid var(--neon);
+      background:
+        linear-gradient(160deg, rgba(180, 77, 255, 0.16), transparent 55%),
+        var(--inner);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    /* 카드 네 모서리의 장식 */
+    .char-card .corner {
+      position: absolute;
+      width: 10px; height: 10px;
+      border: 2px solid var(--neon-soft);
+    }
+    .corner.tl { top: 6px; left: 6px;  border-right: none; border-bottom: none; }
+    .corner.tr { top: 6px; right: 6px; border-left: none;  border-bottom: none; }
+    .corner.bl { bottom: 6px; left: 6px;  border-right: none; border-top: none; }
+    .corner.br { bottom: 6px; right: 6px; border-left: none;  border-top: none; }
+
+    .card-label {
+      font-size: 8px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      text-align: right;
+    }
+
+    .profile {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .avatar {
+      position: relative;
+      flex-shrink: 0;
+      width: 96px;
+      height: 96px;
+      border: 3px solid var(--neon);
+      background: #1a1228;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: var(--neon-soft);
+      text-shadow: 0 0 10px var(--neon);
+      box-shadow: 0 0 12px rgba(180, 77, 255, 0.5);
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
+    }
+
+    .field-name {
+      font-size: 8px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .name {
+      font-size: 20px;
+      line-height: 1.4;
+      color: #fff;
+      text-shadow: 0 0 8px var(--neon), 0 0 20px var(--neon);
+    }
+    .job {
+      margin-top: 10px;
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border: 2px solid var(--neon);
+      color: var(--neon-soft);
+    }
+    .job .pixel { font-size: 8px; color: var(--muted); margin-right: 6px; }
+
+    /* 한 줄 대사창 */
+    .dialog {
+      margin-top: 18px;
+      border: 2px solid var(--neon-dim);
+      background: #07060b;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.8;
+      min-height: 52px;
+    }
+    .dialog .who { color: var(--neon); margin-right: 8px; }
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 12px;
+      background: var(--neon-soft);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 0.8s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ============================================
+       ④ 능력치 막대
+       ============================================ */
+    .stat { margin-bottom: 12px; }
+    .stat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .stat-head .num {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      color: var(--neon-soft);
+    }
+    .bar {
+      height: 14px;
+      border: 2px solid var(--neon-dim);
+      background: var(--inner);
+      padding: 2px;
+    }
+    .fill {
+      height: 100%;
+      width: 0;
+      background: repeating-linear-gradient(90deg, var(--neon) 0 8px, #9a33e6 8px 10px);
+      box-shadow: 0 0 8px var(--neon);
+      transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* ============================================
+       ⑤ 장비 슬롯 (링크 3개)
+       ============================================ */
+    .slots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      list-style: none;
+    }
+    .slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      padding: 12px 6px;
+      border: 2px solid var(--neon-dim);
+      background: var(--inner);
+      color: var(--text);
+      text-decoration: none;
+      height: 100%;
+      transition: all 0.15s;
+    }
+    .slot-type { font-size: 7px; color: var(--muted); }
+
+    /* 아이콘이 들어가는 네모 칸 (게임 인벤토리 칸) */
+    .slot-icon {
+      width: 56px; height: 56px;
+      border: 2px solid var(--neon);
+      background:
+        linear-gradient(rgba(180,77,255,0.08) 1px, transparent 1px) 0 0 / 8px 8px,
+        linear-gradient(90deg, rgba(180,77,255,0.08) 1px, transparent 1px) 0 0 / 8px 8px,
+        #160f22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 10px rgba(180, 77, 255, 0.3);
+    }
+    .slot-icon svg { width: 28px; height: 28px; }
+
+    .slot-name { font-size: 9px; color: var(--neon-soft); }
+    .slot-value {
+      font-size: 11px;
+      color: var(--text);
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+
+    /* 마우스를 올리면 장비가 빛나요 */
+    .slot:hover,
+    .slot:focus-visible {
+      border-color: var(--neon);
+      background: rgba(180, 77, 255, 0.12);
+      box-shadow: 0 0 14px rgba(180, 77, 255, 0.55);
+      transform: translateY(-3px);
+      outline: none;
+    }
+    .slot:hover .slot-icon { box-shadow: 0 0 12px var(--neon), inset 0 0 10px rgba(180,77,255,0.4); }
+
+    /* ============================================
+       ⑥ SELECT 버튼
+       ============================================ */
+    .select-btn {
+      display: block;
+      width: 100%;
+      margin-top: 26px;
+      padding: 16px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #fff;
+      background: var(--neon);
+      border: 3px solid var(--neon-soft);
+      box-shadow: 0 6px 0 #6a1fb0, 0 0 20px rgba(180, 77, 255, 0.6);
+      cursor: pointer;
+      transition: transform 0.08s, box-shadow 0.08s;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    .select-btn:hover { filter: brightness(1.15); }
+    /* 누를 때 아래로 쑥 들어가는 느낌 */
+    .select-btn:active {
+      transform: translateY(6px);
+      box-shadow: 0 0 0 #6a1fb0, 0 0 20px rgba(180, 77, 255, 0.6);
+    }
+    .select-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 6px 0 #6a1fb0, 0 0 14px rgba(180,77,255,0.5); }
+      50%      { box-shadow: 0 6px 0 #6a1fb0, 0 0 30px rgba(180,77,255,0.9); }
+    }
+
+    .hint {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 8px;
+      color: var(--muted);
+    }
+
+    /* ============================================
+       ⑦ 등장 효과 (SELECT 누르면 실행)
+       ============================================ */
+
+    /* 화면 전체가 번쩍 */
+    .flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, #fff 0%, var(--neon) 40%, transparent 80%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 40;
+    }
+    .flash.go { animation: flash 0.7s ease-out; }
+    @keyframes flash {
+      0%   { opacity: 0; }
+      15%  { opacity: 0.9; }
+      100% { opacity: 0; }
+    }
+
+    /* 캐릭터 카드가 사라졌다가 쾅! 하고 등장 */
+    .char-card.enter { animation: enter 0.9s cubic-bezier(.2,1.4,.4,1); }
+    @keyframes enter {
+      0%   { transform: scale(0.3) rotate(-4deg); opacity: 0; filter: brightness(4); }
+      55%  { transform: scale(1.06) rotate(1deg); opacity: 1; filter: brightness(1.6); }
+      75%  { transform: scale(0.98); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+
+    /* 창 전체가 흔들흔들 */
+    .screen.shake { animation: shake 0.45s linear 0.35s; }
+    @keyframes shake {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-6px, 3px); }
+      40% { transform: translate(5px, -4px); }
+      60% { transform: translate(-4px, 2px); }
+      80% { transform: translate(3px, -2px); }
+    }
+
+    /* 아바타 위로 떨어지는 빛기둥 */
+    .beam {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 70px;
+      height: 400px;
+      transform: translateX(-50%) scaleY(0);
+      transform-origin: bottom;
+      background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(180,77,255,0.6) 40%, transparent);
+      pointer-events: none;
+      opacity: 0;
+    }
+    .beam.go { animation: beam 1s ease-out; }
+    @keyframes beam {
+      0%   { transform: translateX(-50%) scaleY(0); opacity: 1; }
+      40%  { transform: translateX(-50%) scaleY(1); opacity: 1; }
+      100% { transform: translateX(-50%) scaleY(1) scaleX(0); opacity: 0; }
+    }
+
+    /* 사방으로 튀는 빛 조각 */
+    .spark {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--neon-soft);
+      box-shadow: 0 0 8px var(--neon);
+      pointer-events: none;
+      animation: spark 0.9s ease-out forwards;
+    }
+    @keyframes spark {
+      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+    }
+
+    /* "SENA LEE SELECTED!" 배너 */
+    .banner {
+      position: fixed;
+      top: 50%;
+      left: 0; right: 0;
+      transform: translateY(-50%);
+      text-align: center;
+      padding: 18px 16px;
+      background: rgba(7, 6, 11, 0.88);
+      border-top: 3px solid var(--neon);
+      border-bottom: 3px solid var(--neon);
+      box-shadow: 0 0 30px rgba(180, 77, 255, 0.7);
+      font-size: 16px;
+      line-height: 1.6;
+      color: #fff;
+      text-shadow: 0 0 10px var(--neon);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 45;
+    }
+    .banner small { display: block; font-size: 9px; color: var(--neon-soft); margin-top: 8px; }
+    .banner.go { animation: banner 1.8s ease-in-out 0.4s; }
+    @keyframes banner {
+      0%   { opacity: 0; transform: translateY(-50%) scaleY(0); }
+      15%  { opacity: 1; transform: translateY(-50%) scaleY(1); }
+      80%  { opacity: 1; transform: translateY(-50%) scaleY(1); }
+      100% { opacity: 0; transform: translateY(-50%) scaleY(0); }
+    }
+
+    /* 움직임 줄이기 설정을 켠 사람에게는 효과를 짧게 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ============================================
+       ⑧ 휴대폰처럼 좁은 화면
+       ============================================ */
+    @media (max-width: 420px) {
+      .screen { padding: 18px 14px; }
+      .char-card { padding: 16px 14px; }
+      .profile { gap: 14px; }
+      .avatar { width: 72px; height: 72px; font-size: 18px; }
+      .name { font-size: 15px; }
+      .slots { gap: 6px; }
+      .slot-icon { width: 46px; height: 46px; }
+      .slot-value { font-size: 10px; }
+      .banner { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="screen" id="screen">
+
+    <div class="topbar pixel">
+      <span>PLAYER 1</span>
+      <span class="on">● ONLINE</span>
+    </div>
+
+    <!-- ===== 캐릭터 카드 ===== -->
+    <section class="char-card" id="charCard">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+
+      <p class="card-label pixel">CHARACTER CARD No.001</p>
+
+      <div class="profile">
+        <div class="avatar pixel" id="avatar">
+          SL
+          <span class="beam" id="beam"></span>
+        </div>
+        <div>
+          <p class="field-name pixel">NICKNAME</p>
+          <h1 class="name pixel">Sena Lee</h1>
+          <!-- 직업 -->
+          <div class="job"><span class="pixel">CLASS</span>Designer</div>
+        </div>
+      </div>
+
+      <!-- 한 줄 대사 (글자가 하나씩 타이핑돼요) -->
+      <div class="dialog pixel">
+        <span class="who">SENA:</span><span id="quote"></span><span class="cursor"></span>
+      </div>
+    </section>
+
+    <!-- ===== 능력치 ===== -->
+    <h2 class="section-title pixel">◆ STATUS</h2>
+
+    <div class="stat">
+      <div class="stat-head"><span>직관력</span><span class="num">80</span></div>
+      <div class="bar"><div class="fill" data-value="80"></div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-head"><span>UX적 디자인 사고</span><span class="num">70</span></div>
+      <div class="bar"><div class="fill" data-value="70"></div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-head"><span>디자인 실무 능력</span><span class="num">70</span></div>
+      <div class="bar"><div class="fill" data-value="70"></div></div>
+    </div>
+    <div class="stat">
+      <div class="stat-head"><span>아이디어</span><span class="num">80</span></div>
+      <div class="bar"><div class="fill" data-value="80"></div></div>
+    </div>
+
+    <!-- ===== 장비 슬롯 (링크 3개) ===== -->
+    <h2 class="section-title pixel">◆ EQUIPMENT</h2>
+
+    <ul class="slots">
+      <!-- 슬롯 1: 인스타그램 -->
+      <li>
+        <a class="slot" href="https://www.instagram.com/seungah.li/" target="_blank" rel="noopener">
+          <span class="slot-type pixel">SLOT 01</span>
+          <span class="slot-icon">
+            <!-- 카메라 모양 아이콘 -->
+            <svg viewBox="0 0 16 16" fill="none" stroke="#d9a6ff" stroke-width="1.5" shape-rendering="crispEdges">
+              <rect x="1.5" y="4.5" width="13" height="9"/>
+              <rect x="5" y="2" width="4" height="2.5" fill="#d9a6ff" stroke="none"/>
+              <rect x="5.5" y="6.5" width="5" height="5"/>
+            </svg>
+          </span>
+          <span class="slot-name pixel">INSTA</span>
+          <span class="slot-value">@seungah.li</span>
+        </a>
+      </li>
+
+      <!-- 슬롯 2: 메일 -->
+      <li>
+        <a class="slot" href="mailto:nadamworks@gmail.com">
+          <span class="slot-type pixel">SLOT 02</span>
+          <span class="slot-icon">
+            <!-- 편지봉투 모양 아이콘 -->
+            <svg viewBox="0 0 16 16" fill="none" stroke="#d9a6ff" stroke-width="1.5" shape-rendering="crispEdges">
+              <rect x="1.5" y="3.5" width="13" height="9"/>
+              <path d="M2 4 L8 9 L14 4"/>
+            </svg>
+          </span>
+          <span class="slot-name pixel">MAIL</span>
+          <span class="slot-value">nadamworks<br>@gmail.com</span>
+        </a>
+      </li>
+
+      <!-- 슬롯 3: GitHub -->
+      <li>
+        <a class="slot" href="https://github.com/nadaya-hash" target="_blank" rel="noopener">
+          <span class="slot-type pixel">SLOT 03</span>
+          <span class="slot-icon">
+            <!-- 코드 괄호 </> 모양 아이콘 -->
+            <svg viewBox="0 0 16 16" fill="none" stroke="#d9a6ff" stroke-width="1.5" shape-rendering="crispEdges">
+              <path d="M5 4 L1.5 8 L5 12"/>
+              <path d="M11 4 L14.5 8 L11 12"/>
+              <path d="M9.5 3 L6.5 13"/>
+            </svg>
+          </span>
+          <span class="slot-name pixel">GITHUB</span>
+          <span class="slot-value">nadaya-hash</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- ===== SELECT 버튼 ===== -->
+    <button class="select-btn" id="selectBtn" type="button">▶ SELECT</button>
+    <p class="hint pixel">PRESS SELECT TO SUMMON</p>
+  </main>
+
+  <!-- 등장 효과에 쓰이는 화면 번쩍 + 배너 -->
+  <div class="flash" id="flash"></div>
+  <div class="banner pixel" id="banner">
+    SENA LEE SELECTED!
+    <small>CLASS: DESIGNER · READY</small>
+  </div>
+
+  <script>
+    // ----- 필요한 요소들을 찾아두기 -----
+    const text = "One Step, One Core";   // ← 대사를 바꾸고 싶으면 여기!
+    const quoteEl = document.getElementById("quote");
+    const bars    = document.querySelectorAll(".fill");
+    const screen  = document.getElementById("screen");
+    const card    = document.getElementById("charCard");
+    const avatar  = document.getElementById("avatar");
+    const beam    = document.getElementById("beam");
+    const flash   = document.getElementById("flash");
+    const banner  = document.getElementById("banner");
+    const btn     = document.getElementById("selectBtn");
+
+    // ① 대사를 한 글자씩 타이핑
+    let typingTimer;
+    function typeQuote() {
+      clearTimeout(typingTimer);
+      quoteEl.textContent = "";
+      let i = 0;
+      (function next() {
+        if (i < text.length) {
+          quoteEl.textContent += text[i++];
+          typingTimer = setTimeout(next, 90);   // 숫자가 작을수록 빨라요
+        }
+      })();
+    }
+
+    // ② 능력치 막대 채우기 (0 → 점수)
+    function fillBars() {
+      bars.forEach(bar => (bar.style.width = "0"));
+      setTimeout(() => {
+        bars.forEach(bar => (bar.style.width = bar.dataset.value + "%"));
+      }, 100);
+    }
+
+    // ③ 애니메이션 다시 재생하기 (이름표를 뗐다가 다시 붙이면 처음부터 재생돼요)
+    function replay(el, className) {
+      el.classList.remove(className);
+      void el.offsetWidth;          // 브라우저에게 "리셋됐어!" 알려주는 트릭
+      el.classList.add(className);
+    }
+
+    // ④ 빛 조각 터뜨리기
+    function burst() {
+      for (let i = 0; i < 24; i++) {
+        const s = document.createElement("span");
+        s.className = "spark";
+        const angle = (Math.PI * 2 * i) / 24;
+        const dist = 60 + Math.random() * 70;
+        s.style.left = "50%";
+        s.style.top = "50%";
+        s.style.setProperty("--x", Math.cos(angle) * dist + "px");
+        s.style.setProperty("--y", Math.sin(angle) * dist + "px");
+        avatar.appendChild(s);
+        setTimeout(() => s.remove(), 900);   // 끝나면 지우기
+      }
+    }
+
+    // ⑤ SELECT 버튼을 누르면 등장 효과 전부 실행!
+    btn.addEventListener("click", () => {
+      replay(flash, "go");     // 화면 번쩍
+      replay(card, "enter");   // 카드 쾅! 등장
+      replay(screen, "shake"); // 화면 흔들
+      replay(beam, "go");      // 빛기둥
+      replay(banner, "go");    // SELECTED! 배너
+      setTimeout(burst, 350);  // 빛 조각
+      typeQuote();             // 대사 다시 타이핑
+      fillBars();              // 능력치 다시 채우기
+    });
+
+    // 페이지가 처음 열릴 때
+    setTimeout(typeQuote, 600);
+    setTimeout(fillBars, 300);
+  </script>
+
+</body>
+</html>
